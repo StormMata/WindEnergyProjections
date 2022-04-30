@@ -1,42 +1,37 @@
-function [grid,gridR] = FullArea(CPD)
-%FullArea plots reference area within the US
-%   Plots a reference for measuring the total area of the US
+function [grid,gridR] = FullArea(CPD, latlim, lonlim)
+%FullArea processes geospatial data showing the full extent of the
+%Continental US
+%   Takes in unformatted geospatial agricultural development data and
+%   filters out extraneous data by setting values to NaN, and sets all
+%   values to 1 to show the full extent of the US as a reference for
+%   calculating the available area within the US
 
-    addpath('/Users/stormmata/Library/Mobile Documents/com~apple~CloudDocs/Courses/2021 Spring/1.001/Project');
-    addpath('/Users/stormmata/Downloads/CropData');
-    addpath('/Users/stormmata/Downloads/2021_30m_cdls');
-    addpath('/Users/stormmata/Downloads/urbanspatial-urban-extents-viirs-modis-us-2015-geotiff');
+    addpath('/Users/stormmata/Downloads/TiffData');
     
-    latlim = [23,50];                                                       % Latitude limits for US
-    lonlim = [-127,-65];                                                    % Longitude limits for US
+    grid = zeros((latlim(2) - latlim(1)) * CPD,(abs(lonlim(1)) ...          % Preallocate full US grid
+           - abs(lonlim(2))) * CPD);
     
-    cellperdeg = CPD;                                                       % Number of cells per degree of lat/long
-    
-    grid = zeros((latlim(2) - latlim(1)) * cellperdeg,(abs(lonlim(1)) ...   % Preallocate full US grid
-           - abs(lonlim(2))) * cellperdeg);
-    
-    latvec = flip(linspace(latlim(1),latlim(2),size(grid,1)));              % Vector of latitudes
-    lonvec = linspace(lonlim(1),lonlim(2),size(grid,2));                    % Vector of longitudes
-    
+    latvec = flip(linspace(latlim(1),latlim(2),size(grid,1)));              % Generate vector of reference latitudes
+    lonvec = linspace(lonlim(1),lonlim(2),size(grid,2));                    % Generate vector of reference longitudes
+
     for i = 1:31
     
-        [A,R] = readgeoraster(sprintf('%1.0f.tif',i));                      % Import raw geotif data
+        [A,R] = readgeoraster(sprintf('Crops-%1.0f.tif',i));                % Import raw geotif data
     
-        latnum = ceil((R.LatitudeLimits(2) - R.LatitudeLimits(1)) * ...     % Find number of latitude cells for geotiff data
-                 cellperdeg);
-        lonnum = ceil((abs(R.LongitudeLimits(1)) - abs( ...                 % Find longitude cells for geotiff data
-                 R.LongitudeLimits(2))) * cellperdeg);
+        latnum = ceil((R.LatitudeLimits(2) - R.LatitudeLimits(1)) * CPD);   % Find desired number of latitude cells inside geotiff data
+        lonnum = ceil((abs(R.LongitudeLimits(1)) - abs( ...                 % Find desired number of longitude cells inside geotiff data
+                 R.LongitudeLimits(2))) * CPD);
         
-        A = A(floor(linspace(1,size(A,1),latnum)),floor(linspace( ...       % Sample geotiff data with 
+        A = A(floor(linspace(1,size(A,1),latnum)),floor(linspace( ...       % Sample geotiff data with desired number of cells per degree of lat/lon
             1,size(A,2),lonnum)));
-        R.RasterSize = [size(A,1),size(A,2)];                               % Modify geocellreference structure
+        R.RasterSize = [size(A,1),size(A,2)];                               % Set raster size in geocellreference structure
     
-        A = double(A);                                                      % Convert geotif data from int to double
+        A = double(A);                                                      % Convert values from int to double
     
-        A(A > 0) = 1;                                                       % Convert all geotif values to 1
+        A(A > 0) = 1;                                                       % Convert all non-zeros values to 1
     
-        latind = find(latvec > R.LatitudeLimits(2),1,"last");               % Find coordinates for geotif file reference
-        lonind = find(lonvec < R.LongitudeLimits(1),1,"last");
+        latind = find(latvec > R.LatitudeLimits(2),1,'last');               % Find last index in latvec outside of reference latitude
+        lonind = find(lonvec < R.LongitudeLimits(1),1,'last');              % Find last index in lonvec outside of reference longitude
     
         grid(latind:(latind - 1 + size(A,1)),lonind:(lonind - 1 + ...       % Insert geotiff data into full US grid
             size(A,2))) = grid(latind:(latind - 1 + size(A,1)),lonind: ...
@@ -45,9 +40,9 @@ function [grid,gridR] = FullArea(CPD)
     end
     
     gridR = R;                                                              % Duplicate geocellreference structure
-    gridR.LatitudeLimits  = [latvec(end) latvec(1)];                        % Set latitude limits
-    gridR.LongitudeLimits = [lonvec(1) lonvec(end)];                        % Set longitude limits
-    gridR.RasterSize      = [size(grid,1) size(grid,2)];                    % Set raster size
+    gridR.LatitudeLimits  = [latvec(end) latvec(1)];                        % Set latitude limits in geocellreference structure
+    gridR.LongitudeLimits = [lonvec(1) lonvec(end)];                        % Set longitude limits in geocellreference structure
+    gridR.RasterSize      = [size(grid,1) size(grid,2)];                    % Set raster size in geocellreference structure
 
     grid = imfill(grid,'holes');                                            % Fills holes from piecing together geotif files
     

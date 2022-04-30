@@ -1,82 +1,74 @@
-function [grid,gridR] = CityArea(CPD)
-%CityArea plots geospatial urban area
-%   Plots geospatial data for urban land usage in the US
+function [grid,gridR] = CityArea(CPD, latlim, lonlim)
+%CityArea processes geospatial urban data
+%   Takes in unformatted geospatial urban development data and filters out
+%   extraneous data by setting values to NaN
 
-    addpath('/Users/stormmata/Library/Mobile Documents/com~apple~CloudDocs/Courses/2021 Spring/1.001/Project');
-    addpath('/Users/stormmata/Downloads/CropData');
-    addpath('/Users/stormmata/Downloads/2021_30m_cdls');
-    addpath('/Users/stormmata/Downloads/urbanspatial-urban-extents-viirs-modis-us-2015-geotiff');
+    addpath('/Users/stormmata/Downloads/TiffData');
     
-    latlim = [23,50];                                                       % Latitude limits for US
-    lonlim = [-127,-65];                                                    % Longitude limits for US
+    grid = zeros((latlim(2) - latlim(1)) * CPD,(abs(lonlim(1)) ...          % Preallocate full US grid
+           - abs(lonlim(2))) * CPD);
     
-    cellperdeg = CPD;                                                       % Number of cells per degree of lat/long
-    
-    grid = zeros((latlim(2) - latlim(1)) * cellperdeg,(abs(lonlim(1)) ...   % Preallocate full US grid
-           - abs(lonlim(2))) * cellperdeg);
-    
-    latvec = flip(linspace(latlim(1),latlim(2),size(grid,1)));              % Vector of latitudes
-    lonvec = linspace(lonlim(1),lonlim(2),size(grid,2));                    % Vector of longitudes
+    latvec = flip(linspace(latlim(1),latlim(2),size(grid,1)));              % Generate vector of reference latitudes
+    lonvec = linspace(lonlim(1),lonlim(2),size(grid,2));                    % Generate vector of reference longitudes
 
-    city  = [122:124];                                                      % Crop codes
+    city  = 122:124;                                                        % Reference codes for urban development in geotiff file
     
     for i = 1:31
     
-        [A,R] = readgeoraster(sprintf('%1.0f.tif',i));                      % Import raw geotif data
+        [A,R] = readgeoraster(sprintf('Crops-%1.0f.tif',i));                % Import raw geotif data
     
-        latnum = ceil((R.LatitudeLimits(2) - R.LatitudeLimits(1)) * ...     % Find number of latitude cells for geotiff data
-                 cellperdeg);
-        lonnum = ceil((abs(R.LongitudeLimits(1)) - abs( ...                 % Find longitude cells for geotiff data
-                 R.LongitudeLimits(2))) * cellperdeg);
+        latnum = ceil((R.LatitudeLimits(2) - R.LatitudeLimits(1)) * CPD);   % Find desired number of latitude cells inside geotiff data
+        lonnum = ceil((abs(R.LongitudeLimits(1)) - abs( ...                 % Find desired number of longitude cells inside geotiff data
+                 R.LongitudeLimits(2))) * CPD);
         
-        A = A(floor(linspace(1,size(A,1),latnum)),floor(linspace( ...       % Sample geotiff data with 
+        A = A(floor(linspace(1,size(A,1),latnum)),floor(linspace( ...       % Sample geotiff data with desired number of cells per degree of lat/lon
             1,size(A,2),lonnum)));
-        R.RasterSize = [size(A,1),size(A,2)];                               % Modify geocellreference structure
+        R.RasterSize = [size(A,1),size(A,2)];                               % Set raster size in geocellreference structure
     
-        A = double(A);                                                      % Convert geotif data from int to double
+        A = double(A);                                                      % Convert values from int to double
 
         for j = 1:length(city)
         
-            A(A==city(j)) = 1;                                             % Convert all crop data to 1
+            A(A==city(j)) = 1;                                              % Convert all urban development data to 1
         
         end
     
-        A(A > 1) = 0;                                                       % Convert non-crop data to 0
+        A(A > 1) = 0;                                                       % Convert non-urban data to 0
     
-        latind = find(latvec > R.LatitudeLimits(2),1,"last");               % Find coordinates for geotif file reference
-        lonind = find(lonvec < R.LongitudeLimits(1),1,"last");
+        latind = find(latvec > R.LatitudeLimits(2),1,'last');               % Find last index in latvec outside of reference latitude
+        lonind = find(lonvec < R.LongitudeLimits(1),1,'last');              % Find last index in lonvec outside of reference longitude
     
         grid(latind:(latind - 1 + size(A,1)),lonind:(lonind - 1 + ...       % Insert geotiff data into full US grid
-            size(A,2))) = grid(latind:(latind - 1 + size(A,1)),lonind: ...
+            size(A,2))) = grid(latind:(latind - 1 + size(A,1)),lonind: ...  % Find first index in latvec outside of reference latitude
             (lonind - 1 + size(A,2))) + A;
     
     end
 
-    [A,R]   = readgeoraster('urbanspatial-urban-extents-viirs-modis-us-2015.tif');
+    [A,R]   = readgeoraster('Urban.tif');                                   % Import raw geotif data
 
-    latnum = ceil((R.LatitudeLimits(2) - R.LatitudeLimits(1)) * cellperdeg);% Find number of latitude cells for geotiff data
-    lonnum = ceil((abs(R.LongitudeLimits(1)) - abs( ...                     % Find longitude cells for geotiff data
-             R.LongitudeLimits(2))) * cellperdeg);
+    latnum = ceil((R.LatitudeLimits(2) - R.LatitudeLimits(1)) * CPD);       % Find desired number of latitude cells inside geotiff data
+    lonnum = ceil((abs(R.LongitudeLimits(1)) - abs( ...                     % Find desired number of longitude cells inside geotiff data
+             R.LongitudeLimits(2))) * CPD);
 
-    A = A(floor(linspace(1,size(A,1),latnum)),floor(linspace(1,size(A,2)... % Sample geotiff data with 
+    A = A(floor(linspace(1,size(A,1),latnum)),floor(linspace(1,size(A,2)... % Sample geotiff data with desired number of cells per degree of lat/lon
         ,lonnum)));
-    R.RasterSize = [size(A,1),size(A,2)];                                   % Modify geocellreference structure
+    R.RasterSize = [size(A,1),size(A,2)];                                   % Set raster size in geocellreference structure
 
-    A = double(A);                                                          % Convert geotif data from int to double
+    A = double(A);                                                          % Convert values from int to double
 
-    A(A == 3) = 0;
+    A(A == 3) = 0;                                                          % Convert border data to 0
 
-    latind = find(latvec > R.LatitudeLimits(2),1,"last");                   % Find coordinates for geotif file reference
-    lonind = find(lonvec < R.LongitudeLimits(1),1,"last");
+    latind = find(latvec > R.LatitudeLimits(2),1,'last');                   % Find last index in latvec outside of reference latitude
+    lonind = find(lonvec < R.LongitudeLimits(1),1,'last');                  % Find last index in lonvec outside of reference longitude
 
     grid(latind:(latind - 1 + size(A,1)),lonind:(lonind - 1 + ...           % Insert geotiff data into full US grid
-        size(A,2))) = grid(latind:(latind - 1 + size(A,1)),lonind: ...
+        size(A,2))) = grid(latind:(latind - 1 + size(A,1)),lonind: ...      
         (lonind - 1 + size(A,2))) + A;
     
     gridR = R;                                                              % Duplicate geocellreference structure
-    gridR.LatitudeLimits  = [latvec(end) latvec(1)];                        % Set latitude limits
-    gridR.LongitudeLimits = [lonvec(1) lonvec(end)];                        % Set longitude limits
-    gridR.RasterSize      = [size(grid,1) size(grid,2)];                    % Set raster size
+    gridR.LatitudeLimits  = [latvec(end) latvec(1)];                        % Set latitude limits in geocellreference structure
+    gridR.LongitudeLimits = [lonvec(1) lonvec(end)];                        % Set longitude limits in geocellreference structure
+    gridR.RasterSize      = [size(grid,1) size(grid,2)];                    % Set raster size in geocellreference structure
     
     grid(grid == 0) = NaN;                                                  % Convert all 0s to NaN 
     grid(grid > 1)  = 1;                                                    % Reset all nonzeros values to 1
