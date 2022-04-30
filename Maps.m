@@ -1,5 +1,5 @@
 %% Load and wind speeds at 120 meters
-addpath('/Users/stormmata/Library/Mobile Documents/com~apple~CloudDocs/Courses/Spring 2021/1.001/Project');
+addpath('/Users/stormmata/Library/Mobile Documents/com~apple~CloudDocs/Courses/2021 Spring/1.001/Project');
 
 data120m    = readmatrix('Open_Access_Siting_Regime_ATB_Mid_Turbine.csv');
 
@@ -17,13 +17,14 @@ data120m    = readmatrix('Open_Access_Siting_Regime_ATB_Mid_Turbine.csv');
     z       = griddata(lats,longs,wndspd,xq,yq);
 
 % Construct map axes for US
+    figure;
     ax      = usamap('conus');
     set(ax, 'Visible', 'off')
     latlim  = getm(ax, 'MapLatLimit');
     lonlim  = getm(ax, 'MapLonLimit');
     states  = shaperead('usastatehi','UseGeoCoords', true, 'BoundingBox', ...
                         [lonlim', latlim']);
-    tightmap
+%     tightmap
 
 % Different way of constructing map axes
     % worldmap([25 51],[-125 -65]);
@@ -33,8 +34,8 @@ data120m    = readmatrix('Open_Access_Siting_Regime_ATB_Mid_Turbine.csv');
 
 % Contour map layer
     [~,h] = contourfm(xq,yq,z,15,'linecolor','none');
-    c = colorbar;
-    c.Label.String = 'Wind Speed (m/s)';
+%     c = colorbar;
+%     c.Label.String = 'Wind Speed (m/s)';
     caxis([3 10]);
 
 % Set alpha of contour
