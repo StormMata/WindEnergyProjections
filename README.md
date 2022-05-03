@@ -4,8 +4,6 @@ At a high level, this project contains two separate pursuits:
   1. collection and processing of geospatial data, including assimilating data from different sources into a single structure
   2. application of the above information to simulate the progression and expansion of wind energy in the US based on historical trends and future predictions from industry and academic source
 
-All data are contained in the zip file called "TiffData.zip". The unzipped data are 13.5 GB in size.
-
 <b>The data for this project were collected from the following sources:</b>
   1. Geospatial agricultural development data: United States Department of Agriculture CroplandCROS App<sup>1</sup>
   2. Geospatial water body data: Ibid<sup>1</sup>
@@ -17,6 +15,10 @@ All data are contained in the zip file called "TiffData.zip". The unzipped data 
   8. Historical trends and future predictions in wind turbine technology advancements: United States Department of Energy<sup>7-9</sup>
 
 <b>Requirements to Run</b>
+
+<b>Data:</b> Download the data from: https://drive.google.com/file/d/1zZARRv8IZAjOBQrMyWTTU6ABGsUOqtO2/view?usp=sharing
+
+All necessary data are contained in the zip file called "TiffData.zip". The unzipped data are 13.5 GB in size.
 
 This program is composed entirely of Matlab .m files. The only requirement for running the program is a working copy of Matlab.
 
