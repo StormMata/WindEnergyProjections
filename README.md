@@ -22,7 +22,7 @@ All necessary data are contained in the zip file called "TiffData.zip". The unzi
 
 This program is composed entirely of Matlab .m files. The only requirement for running the program is a working copy of Matlab.
 
-It should be noted that line 4 of Main.m (addpath('...')) should be modified to point to the current location of the data on your machine.
+It should be noted that line 15 of Main.m (addpath('...')) should be modified to point to the current location of the data on your machine.
 
 <b>Instructions to Run</b>
   1. Download data from the link above
