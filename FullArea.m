@@ -49,4 +49,8 @@ function [grid,gridR] = FullArea(CPD, latlim, lonlim)
     grid(grid == 0) = NaN;                                                  % Convert all 0s to NaN 
     grid(grid > 1)  = 1;                                                    % Reset all nonzeros values to 1
 
+    fprintf('\n------------------------')                                   % Print completed function to screen
+    fprintf('\n-------Full Area--------')
+    fprintf('\n------------------------\n')
+
 end

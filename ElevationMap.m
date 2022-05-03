@@ -51,11 +51,11 @@ function [elev,elevR] = ElevationMap(CPD, latlim, lonlim, grid)
     dx = abs(dx);                                                           % Take absolute value because it doesn't matter if the elevation is increasing or decreasing
     dy = abs(dy);                                                           % Take absolute value because it doesn't matter if the elevation is increasing or decreasing
 
-    dx(dx > 10) = 1;                                                      % All values greater than 10 m over the quadrant are set to NaN
-    dy(dy > 10) = 1;                                                      % All values greater than 10 m over the quadrant are set to NaN
+    dx(dx > 7) = 1;                                                         % All values greater than 10 m over the quadrant are set to NaN
+    dy(dy > 7) = 1;                                                         % All values greater than 10 m over the quadrant are set to NaN
     
-    dx(dx ~= 1) = NaN;                                                     % All values less than 10 m over the quadrant are set to 1
-    dy(dy ~= 1) = NaN;                                                     % All values less than 10 m over the quadrant are set to 1
+    dx(dx ~= 1) = NaN;                                                      % All values less than 10 m over the quadrant are set to 1
+    dy(dy ~= 1) = NaN;                                                      % All values less than 10 m over the quadrant are set to 1
 %     dx(dx > 10) = NaN;                                                      % All values greater than 10 m over the quadrant are set to NaN
 %     dy(dy > 10) = NaN;                                                      % All values greater than 10 m over the quadrant are set to NaN
 %     
@@ -68,5 +68,9 @@ function [elev,elevR] = ElevationMap(CPD, latlim, lonlim, grid)
 
     elev = A .* grid;                                                       % Retain only values within the borders of ConUS
     elevR = R;                                                              % Return geocellreference structure
+
+    fprintf('\n------------------------')                                   % Print completed function to screen
+    fprintf('\n-----Elevation Map------')
+    fprintf('\n------------------------\n')
 
 end
