@@ -24,6 +24,11 @@ This program is composed entirely of Matlab .m files. The only requirement for r
 
 It should be noted that line 4 of Main.m (addpath('...')) should be modified to point to the current location of the data on your machine.
 
+<b>Instructions to Run</b>
+  1. Download data from the link above
+  2. Download .m files
+  3. open Main.m and run. The separate functions will automatically, load, process, and plot the tiff data. PowerCalcs.m will then run the wind energy simulations.
+
 <hr>
 
 <b>Citations</b>
