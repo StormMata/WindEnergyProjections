@@ -38,15 +38,15 @@ function [TotalArea,FreeArea,Lats,Lons] = SumArea(grid, gridR, combW)
 
             if ~isnan(grid(i,j))
 
-%                 TotalArea = TotalArea + eartharea(latvec(i-1), ...              % Sum total area in the continental US
-%                             lonvec(j-1),latvec(i),lonvec(j),earthellipsoid);
+                TotalArea = TotalArea + areaquad(latvec(i-1), ...           % Sum total area in the continental US
+                            lonvec(j-1),latvec(i),lonvec(j),earthellipsoid);
 
             end
 
             if ~isnan(combW(i,j))
 
-%                 FreeArea = FreeArea + eartharea(latvec(i-1),lonvec(j-1), ... % Sum area available for wind energy expansion
-%                            latvec(i),lonvec(j),earthellipsoid);
+                FreeArea = FreeArea + areaquad(latvec(i-1),lonvec(j-1), ... % Sum area available for wind energy expansion
+                           latvec(i),lonvec(j),earthellipsoid);
 
                 Lats(Tally) = i;                                            % Record latitudes of available wind farm site
                 Lons(Tally) = j;                                            % Record longitudes of available wind farm site
@@ -58,19 +58,6 @@ function [TotalArea,FreeArea,Lats,Lons] = SumArea(grid, gridR, combW)
 
         end
     end
-
-%     function area = eartharea(lat1,lon1,lat2,lon2,ellipsoid)                % This function computes the area bounded by the lats/lons
-% 
-%         [lat1,lon1,lat2,lon2] = toRadians('degrees',lat1,lon1,lat2,lon2);
-%         lat1 = convertlat(ellipsoid, lat1, 'geodetic', 'authalic', 'nocheck');
-%         lat2 = convertlat(ellipsoid, lat2, 'geodetic', 'authalic', 'nocheck');
-%         radius = rsphere('authalic',ellipsoid);
-% 
-%         a = abs(lon1-lon2) .* abs(sin(lat1)-sin(lat2)) / (4*pi);
-% 
-%         area = a * 4*pi*radius^2;
-% 
-%     end
 
     fprintf(repmat('\b',1,LL))
     fprintf('------------------------\n')                                   % Print progress to screen

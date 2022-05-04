@@ -1,4 +1,4 @@
-function [Outputs] = PowerCalcs(Lons,Lats,lonvec,latvec)
+function [Outputs] = PowerCalcs(Lons,Lats,grid, latlim,lonlim)
 %PowerCalcs Simulates the annual new wind power installations
 %   Takes in geospatial data and wind turbine trend information to simulate
 %   annual new wind turbine capacity (in GW) installations based on site
@@ -9,6 +9,9 @@ function [Outputs] = PowerCalcs(Lons,Lats,lonvec,latvec)
     LL = fprintf('Year:               XXXX');
     
     earthellipsoid = referenceSphere('earth','mile');                       % Set the reference datum for the area calculations
+
+    latvec = flip(linspace(latlim(1),latlim(2),size(grid,1)));              % Generate vector of reference latitudes
+    lonvec = linspace(lonlim(1),lonlim(2),size(grid,2));                    % Generate vector of reference longitudes
     
     lonind(1) = find(lonvec < -104,1,'last');                               % Find last index in lonvec outside of target region
     lonind(2) = find(lonvec > -96,1,'first');                               % Find first index in lonvec outside of target region
@@ -55,7 +58,7 @@ function [Outputs] = PowerCalcs(Lons,Lats,lonvec,latvec)
     
         AnnualNewCap(y) = floor(random('Normal',mu,2));                     % Predict yearly new capacity based on a normal distribution about literature values
     
-        while CSum < AnnualNewCap(y)
+        while CSum < (0.9 * AnnualNewCap(y))
         
             radius = randi([10 23]);                                        % Select a radius for the new wind farm. This is a proxy for the overall size of the wind farm
             

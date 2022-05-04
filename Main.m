@@ -12,8 +12,6 @@ clc
 
 clearvars
 
-addpath('/Users/stormmata/Downloads');                                      % Set path to tiff data
-
 latlim  = [  23, 50];                                                       % Latitude limits for bounding box
 lonlim  = [-127,-65];                                                       % Longitude limits for bounding box
 
@@ -33,6 +31,8 @@ lonlim  = [-127,-65];                                                       % Lo
 
 [comb,combW]     = CombineAreas(wind,crops,water,city,forest,elev);         % Combine map layers
 
-[Lats,Lons]      = SumArea(grid, gridR, combW);                             % Find remaining areas available for wind farm development
+[~,~,Lats,Lons]  = SumArea(grid, gridR, combW);                             % Find remaining areas available for wind farm development
 
-[Outputs]        = PowerCalcs(Lons,Lats,lonvec,latvec);                     % Simulate new wind farm development
+[Outputs]        = PowerCalcs(Lons, Lats, grid, latlim, lonlim);            % Simulate new wind farm development
+
+MakePlots(grid,wind,crops,water,city,forest,elev,comb,combW,gridR,latlim, lonlim)
