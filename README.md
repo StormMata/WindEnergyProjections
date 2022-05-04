@@ -33,17 +33,17 @@ As is typical with Matlab, all data and functions should be in Matlab's path. In
 
 <b>Citations</b>
 
-<sup>1</sup><i>CroplandCROS [beta]</i>, National Agricultural Statistical Service. [Online]. Available: https://cropcros.azurewebsites.net Note: Data were too large to be downloaded together. In total, 31 separate files were generated from the CroplandCROS App. Agricultural, water, and city data are all included in the same tiff files.
+<sup>1</sup><i> CroplandCROS [beta]</i>, National Agricultural Statistical Service. [Online]. Available: https://cropcros.azurewebsites.net Note: Data were too large to be downloaded together. In total, 31 separate files were generated from the CroplandCROS App. Agricultural, water, and city data are all included in the same tiff files.
 
-<sup>2</sup><i>TIGER/Line Shapefile, 2019, nation, U.S., Current Metropolitan Statistical Area/Micropolitan Statistical Area (CBSA) National</i>, United States Census Bureau, Oct. 2021. [online]. Available: https://catalog.data.gov/dataset/tiger-line-shapefile-2019-nation-u-s-current-metropolitan-statistical-area-micropolitan-statist
+<sup>2</sup><i> TIGER/Line Shapefile, 2019, nation, U.S., Current Metropolitan Statistical Area/Micropolitan Statistical Area (CBSA) National</i>, United States Census Bureau, Oct. 2021. [online]. Available: https://catalog.data.gov/dataset/tiger-line-shapefile-2019-nation-u-s-current-metropolitan-statistical-area-micropolitan-statist
 
-<sup>3</sup><i>Elevation - Global version - Version 2</i>, Geospatial Information Authority of Japan, Feb. 2017. [online]. Available: https://github.com/globalmaps/gm_el_v2_west
+<sup>3</sup><i> Elevation - Global version - Version 2</i>, Geospatial Information Authority of Japan, Feb. 2017. [online]. Available: https://github.com/globalmaps/gm_el_v2_west
 
-<sup>4</sup><i>Vegetation (Percent Tree Cover) - Global version - Version 2</i>, Geospatial Information Authority of Japan, Feb. 2017. [online]. Available: https://github.com/globalmaps/gm_ve_v2
+<sup>4</sup><i> Vegetation (Percent Tree Cover) - Global version - Version 2</i>, Geospatial Information Authority of Japan, Feb. 2017. [online]. Available: https://github.com/globalmaps/gm_ve_v2
 
-<sup>5</sup><i>110-Meter Hub Height (Current Technology)</i>, National Renewable Energy Laboratory. [online]. Available: https://maps.nrel.gov/wind-prospector
+<sup>5</sup><i> 110-Meter Hub Height (Current Technology)</i>, National Renewable Energy Laboratory. [online]. Available: https://maps.nrel.gov/wind-prospector
 
-<sup>6</sup><i>Wind Farm Sites</i>, National Renewable Energy Laboratory. [online]. Available: https://maps.nrel.gov/wind-prospector
+<sup>6</sup><i> Wind Farm Sites</i>, National Renewable Energy Laboratory. [online]. Available: https://maps.nrel.gov/wind-prospector
 
 <sup>7</sup> United States Department of Energy, “Wind Vision: A New Era for Wind Power in the United States,” DOE/GO-102015-4557, Apr. 2015. [Online]. Available: https://www.energy.gov/sites/prod/files/WindVision_Report_final.pdf
 
