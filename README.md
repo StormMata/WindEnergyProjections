@@ -2,7 +2,7 @@
 
 At a high level, this project contains two separate pursuits:
   1. collection and processing of geospatial data, including assimilating data from different sources into a single structure
-  2. application of the above information to simulate the progression and expansion of wind energy in the US based on historical trends and future predictions from industry and academic source
+  2. application of the above information to simulate the progression and expansion of wind energy in the US based on historical trends and future predictions from industry and government sources
 
 <b>The data for this project were collected from the following sources:</b>
   1. Geospatial agricultural development data: United States Department of Agriculture CroplandCROS App<sup>1</sup>
